@@ -1,4 +1,4 @@
-import { Divider, Input, Modal, Button } from "antd";
+import { Divider, Input, Modal, Button, Col } from "antd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Space, Table, Tag } from "antd";
@@ -18,7 +18,6 @@ const PageHeader = () => {
   useEffect(() => {
     console.log(inputValue, "inputvalue");
     if (!searchTerm || inputValue) {
-      // perform your API search here
       async function fetchData() {
         const response = await fetch(
           "https://lunivacare.ddns.net/CFCMemberService/LunivaCFCMemApi/GetMemberListForElection?searchby=Name&searchparameter=Sure"
@@ -151,21 +150,15 @@ const PageHeader = () => {
   ];
 
   return (
-    <div>
+    <PageHeaderComponent>
       <PageHeaders>
         <Searchbar>
-          <p
-            style={{
-              whiteSpace: "nowrap",
-              marginLeft: "8px",
-              fontSize: "25px",
-              fontWeight: "bold",
-            }}
-          >
+          <p className="searchby" style={{}}>
             Search By:
           </p>
           <Select
             // defaultValue="none"
+
             style={{
               width: "30%",
               margin: 10,
@@ -198,6 +191,7 @@ const PageHeader = () => {
             ]}
           />
           <Input
+            className="input-filed"
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             value={query}
@@ -207,27 +201,33 @@ const PageHeader = () => {
               height: "40px",
               marginTop: "16px",
               padding: "6px",
-              fontSize: "24px",
+              fontSize: "20px",
             }}
-            placeholder="Search Here"
+            placeholder="Search "
           />
         </Searchbar>
         <Divider orientation="right" plain></Divider>
       </PageHeaders>
       {searchTerm ? (
         <Tablebody>
-          <Table columns={columns} dataSource={finalstore} />
+          <Col span={24}>
+            <Table columns={columns} dataSource={finalstore} />
+          </Col>
         </Tablebody>
       ) : (
-        <h2 style={{ display: "flex", justifyContent: "center" }}>
+        <h3
+          className="display-text"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
           Hello and welcome to the search page, Look up your item and see what
           comes up.
-        </h2>
+        </h3>
       )}
       <Modal
         footer={null}
-        width={500}
-        style={{ height: "500px" }}
+        // width={500}
+        style={{ marginBottom: "450px" }}
+        wrapClassName="ant-modal-centered"
         title="Identity Card"
         open={isModalOpen}
         onOk={handleOk}
@@ -235,10 +235,24 @@ const PageHeader = () => {
       >
         <Idcard data={recorddata} />
       </Modal>
-    </div>
+    </PageHeaderComponent>
   );
 };
 export default PageHeader;
+const PageHeaderComponent = styled.div`
+  @media screen and (max-width: 480px) {
+    .searchby {
+      font-size: 18px !important;
+      margin-top: 24px !important;
+    }
+  }
+  .searchby {
+    white-space: nowrap;
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+`;
 const PageHeaders = styled.div`
   padding: 5px;
   justify-content: center;
@@ -246,7 +260,7 @@ const PageHeaders = styled.div`
 const Tablebody = styled.div`
   background: rgb(254, 254, 254);
   box-shadow: rgba(31, 38, 135, 0.17) 0px 2px 22px 0px;
-  backdrop-filter: blur(4px);
+  /* backdrop-filter: blur(4px); */
   /* border-radius: 10px; */
   margin: 10px;
   /* border: 5px solid #d1cbcb; */

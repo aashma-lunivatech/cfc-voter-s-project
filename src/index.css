@@ -1,10 +1,19 @@
 body{
     background: aliceblue;
 }
+a{
+  color: black !important;
+}
   .ant-select-selector {
     width: 100%;
     height: 38px !important;
     padding: 0 11px;
+  }
+  @media screen and (max-width: 480px) {
+    .ant-table-wrapper .ant-table {
+      color: rgba(0, 0, 0, 0.88);
+      font-size: 12px !important;
+    }
   }
   .ant-table-wrapper .ant-table {
     color: rgba(0, 0, 0, 0.88);
@@ -14,15 +23,7 @@ body{
     font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
   }
 
-  :where(.css-dev-only-do-not-override-1vtf12y) a {
-    color: #050505;
-    text-decoration: none;
-    background-color: transparent;
-    outline: none;
-    cursor: pointer;
-    transition: color 0.3s;
-    -webkit-text-decoration-skip: objects;
-  }
+ 
   .modalStyle .ant-modal-header {
     border-radius: 20px 20px 0 0;
     justify-content: center;
@@ -33,4 +34,28 @@ body{
     font-size: 20px;
   }
 
- 
+ /* //responsive */
+
+  @media screen and (max-width: 480px) {
+    .ant-select-single.ant-select-show-arrow .ant-select-selection-item, :where(.css-dev-only-do-not-override-1vtf12y).ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+      padding-inline-end: 18px;
+      font-size: 13px;
+    }
+    .display-text {
+    font-size: 16px;
+    margin-top: 24px;    
+  }
+  .searchby{
+    font-size: 14px;
+  }
+  .input-filed{
+    font-size: 16px !important;
+  }.selectclassname{
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .ant-table {
+    overflow-x: auto;
+  }
+}

@@ -39,6 +39,11 @@ const IdCardPage = styled.div`
     display: grid;
     justify-content: center;
   }
+  @media screen and (max-width: 480px) {
+    p {
+      font-size: 14px !important;
+    }
+  }
   span {
     margin-left: 10px;
   }
