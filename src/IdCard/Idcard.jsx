@@ -42,4 +42,7 @@ const IdCardPage = styled.div`
   span {
     margin-left: 10px;
   }
+  p {
+    font-size: 18px;
+  }
 `;

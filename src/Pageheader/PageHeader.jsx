@@ -13,20 +13,28 @@ const PageHeader = () => {
   const [selectedvalue, setSelectedvalue] = useState();
   const [finaldatasave, setFinaldata] = useState();
   const [query, setQuery] = useState(data);
+  const [finalstore, setFinalStore] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     console.log(inputValue, "inputvalue");
-    async function fetchData() {
-      const response = await fetch(
-        "https://lunivacare.ddns.net/CFCMemberService/LunivaCFCMemApi/GetMemberListForElection?searchby=Name&searchparameter=Sure"
-      );
-      const datas = await response.json();
-      console.log(datas.memberlist, "datas");
-      setData(datas.memberlist);
-      setFinaldata(datas.memberlist);
+    if (!searchTerm || inputValue) {
+      // perform your API search here
+      async function fetchData() {
+        const response = await fetch(
+          "https://lunivacare.ddns.net/CFCMemberService/LunivaCFCMemApi/GetMemberListForElection?searchby=Name&searchparameter=Sure"
+        );
+        const datas = await response.json();
+        console.log(datas.memberlist, "datas");
+        setData(datas.memberlist);
+        setFinaldata(datas.memberlist);
+      }
+      fetchData();
     }
-    fetchData();
-  }, []);
-  const datasource = selectedvalue ? filteredData : null;
+  }, [searchTerm]);
+  useEffect(() => {
+    const datasource = selectedvalue ? filteredData : null;
+    setFinalStore(datasource);
+  });
   const handleInputClear = (e) => {
     console.log("i ama cleared");
     setQuery("");
@@ -35,27 +43,17 @@ const PageHeader = () => {
     console.log(e, "handlekeydowne");
   };
   const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
     setQuery(e.target.value);
-    const vare = e.target.value;
-    console.log(typeof vare, "i am a target");
-    if (vare === "<empty string>") {
-      console.log("string data ");
-    }
+
     const inputValues = e.target.value;
-    console.log(e.target.value, "empty");
     setInputValue(inputValues);
     const inputValue = e.target.value.toLowerCase();
     console.log(inputValue, "userinput");
     const filteredData = data.filter((item) => {
-      if (selectedvalue === "") {
-        setData(inputValue);
-      }
       if (selectedvalue == "Mobile") {
         const Mobile = item.MobileNo.toString().toLowerCase();
         return Mobile.includes(inputValue);
-      } else if (selectedvalue == "CurrentAddress") {
-        const CurrentAddress = item.CurrentAddress.toString().toLowerCase();
-        return CurrentAddress.includes(inputValue);
       } else if (selectedvalue == "Member") {
         const Member = item.Member.toString().toLowerCase();
         return Member.includes(inputValue);
@@ -73,7 +71,6 @@ const PageHeader = () => {
   };
 
   const showModal = (record) => {
-    // setModalData(record);
     setIsModalOpen(true);
   };
   const handleOk = () => {
@@ -161,7 +158,7 @@ const PageHeader = () => {
             style={{
               whiteSpace: "nowrap",
               marginLeft: "8px",
-              fontSize: "20px",
+              fontSize: "25px",
               fontWeight: "bold",
             }}
           >
@@ -172,7 +169,8 @@ const PageHeader = () => {
             style={{
               width: "30%",
               margin: 10,
-              height: "40px",
+              height: "50px",
+              padding: "6px",
             }}
             onChange={handleChange}
             options={[
@@ -204,19 +202,32 @@ const PageHeader = () => {
             onKeyDown={handleKeyDown}
             value={query}
             onClear={handleInputClear}
-            style={{ width: "30%", height: "40px", margin: "10px" }}
-            placeholder="Search "
+            style={{
+              width: "30%",
+              height: "40px",
+              marginTop: "16px",
+              padding: "6px",
+              fontSize: "24px",
+            }}
+            placeholder="Search Here"
           />
         </Searchbar>
         <Divider orientation="right" plain></Divider>
       </PageHeaders>
-      <Tablebody>
-        <Table columns={columns} dataSource={datasource} />
-      </Tablebody>
+      {searchTerm ? (
+        <Tablebody>
+          <Table columns={columns} dataSource={finalstore} />
+        </Tablebody>
+      ) : (
+        <h2 style={{ display: "flex", justifyContent: "center" }}>
+          Hello and welcome to the search page, Look up your item and see what
+          comes up.
+        </h2>
+      )}
       <Modal
         footer={null}
-        width={800}
-        style={{ height: "1000px" }}
+        width={500}
+        style={{ height: "500px" }}
         title="Identity Card"
         open={isModalOpen}
         onOk={handleOk}
