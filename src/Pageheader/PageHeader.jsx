@@ -24,6 +24,8 @@ const PageHeader = () => {
         );
         const datas = await response.json();
         console.log(datas.memberlist, "datas");
+        const removedTime = datas.memberlist.map((i) => i.DOB.split("T")[0]);
+        console.log(removedTime);
         setData(datas.memberlist);
         setFinaldata(datas.memberlist);
       }
@@ -112,6 +114,9 @@ const PageHeader = () => {
       title: "MembershipExpiryDate",
       dataIndex: "MembershipExpiryDate",
       key: "MembershipExpiryDate",
+      render: (_, record) => (
+        <div>{record.MembershipExpiryDate.split("T")[0]}</div>
+      ),
     },
     {
       title: "Address",
@@ -122,29 +127,33 @@ const PageHeader = () => {
       title: "MembershipDate",
       dataIndex: "MembershipDate",
       key: "MembershipDate",
+      render: (_, record) => <div>{record.MembershipDate.split("T")[0]}</div>,
     },
 
     {
       title: "DOB",
       dataIndex: "DOB",
       key: "DOB",
+      render: (_, record) => <div>{record.DOB.split("T")[0]}</div>,
     },
 
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Space size="middle">
-          <a
-            onClick={() => {
-              console.log(record, "recordofselectedfiled");
-              setrecorddata(record);
-              showModal();
-            }}
-          >
-            View
-          </a>
-        </Space>
+        <Buttoncom>
+          <Space size="middle">
+            <div
+              onClick={() => {
+                setrecorddata(record);
+                showModal();
+              }}
+              style={{ color: "white" }}
+            >
+              View
+            </div>
+          </Space>
+        </Buttoncom>
       ),
     },
   ];
@@ -235,6 +244,28 @@ const PageHeader = () => {
       >
         <Idcard data={recorddata} />
       </Modal>
+
+      <div
+        style={{
+          position: "fixed",
+          left: 0,
+          bottom: 0,
+          width: "100%",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
+          padding: "2px",
+        }}
+      >
+        <div style={{ fontSize: 20 }}>Powered by </div>
+        <img
+          src=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2motjI5uJzUekAeuwejbcKj8FGgz22m0igg&usqp=CAU"
+          style={{ width: "10%", marginLeft: 10 }}
+        />
+      </div>
     </PageHeaderComponent>
   );
 };
@@ -263,6 +294,7 @@ const Tablebody = styled.div`
   /* backdrop-filter: blur(4px); */
   /* border-radius: 10px; */
   margin: 10px;
+  margin-bottom: 90px;
   /* border: 5px solid #d1cbcb; */
 `;
 const Searchbar = styled.div`
@@ -273,4 +305,16 @@ const Searchbar = styled.div`
   box-shadow: rgba(31, 38, 135, 0.17) 0px 2px 22px 0px;
   backdrop-filter: blur(4px);
   border-radius: 10px;
+`;
+
+const Buttoncom = styled.div`
+  background-color: #1d92ff;
+  border-radius: 4px;
+  padding: "5px 10px";
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  :hover {
+    background-color: #1051b8;
+  }
 `;
