@@ -142,10 +142,7 @@ const PageHeader = () => {
               showModal();
             }}
           >
-            <a>
-              {/* <AiFillEye /> */}
-              {/* <IconName>View</IconName> */}
-            </a>
+            <a>View</a>
           </a>
         </Space>
       ),
