@@ -183,12 +183,11 @@ const PageHeader = () => {
                 value: "Mobile",
                 label: "Mobile",
               },
-
-              {
-                id: 3,
-                value: "Citizenship",
-                label: "Citizenship",
-              },
+              // {
+              //   id: 3,
+              //   value: "Citizenship",
+              //   label: "Citizenship",
+              // },
               {
                 id: 4,
                 value: "MemberCode",

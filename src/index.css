@@ -33,6 +33,9 @@ a {
   justify-content: center;
   display: flex;
 }
+.ant-modal .ant-modal-content {
+  border: 9px solid #141313;
+}
 
 :where(.css-dev-only-do-not-override-1vtf12y).ant-select-single.ant-select-show-arrow .ant-select-selection-item,
 :where(.css-dev-only-do-not-override-1vtf12y).ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
