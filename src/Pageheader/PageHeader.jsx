@@ -15,27 +15,28 @@ const PageHeader = () => {
   const [query, setQuery] = useState(data);
   const [finalstore, setFinalStore] = useState();
   const [searchTerm, setSearchTerm] = useState("");
-  useEffect(() => {
-    // console.log(inputValue, "inputvalue");
-    if (!searchTerm || inputValue) {
-      async function fetchData() {
-        const response = await fetch(
-          "https://lunivacare.ddns.net/CFCMemberService/LunivaCFCMemApi/GetMemberListForElection?searchby=Name&searchparameter=Sure"
-        );
-        const datas = await response.json();
 
-        const removedTime = datas.memberlist.map((i) => i.DOB.split("T")[0]);
+  // useEffect(() => {
+  //   // console.log(inputValue, "inputvalue");
+  //   if (!searchTerm || inputValue) {
+  //     async function fetchData() {
+  //       const response = await fetch(
+  //         "https://lunivacare.ddns.net/CFCMemberService/LunivaCFCMemApi/GetMemberListForElection?searchby=Name&searchparameter=Sure"
+  //       );
+  //       const datas = await response.json();
 
-        setData(datas.memberlist);
-        setFinaldata(datas.memberlist);
-      }
-      fetchData();
-    }
-  }, [searchTerm]);
-  useEffect(() => {
-    const datasource = selectedvalue ? filteredData : null;
-    setFinalStore(datasource);
-  });
+  //       const removedTime = datas.memberlist.map((i) => i.DOB.split("T")[0]);
+
+  //       setData(datas.memberlist);
+  //       setFinaldata(datas.memberlist);
+  //     }
+  //     fetchData();
+  //   }
+  // }, [searchTerm]);
+  // useEffect(() => {
+  //   const datasource = selectedvalue ? filteredData : null;
+  //   setFinalStore(datasource);
+  // });
   const handleInputClear = (e) => {
     setQuery("");
   };
@@ -46,28 +47,28 @@ const PageHeader = () => {
     setSearchTerm(e.target.value);
     setQuery(e.target.value);
 
-    const inputValues = e.target.value;
-    setInputValue(inputValues);
-    const inputValue = e.target.value.toLowerCase();
+    // const inputValues = e.target.value;
+    // setInputValue(inputValues);
+    // const inputValue = e.target.value.toLowerCase();
 
-    const filteredData = data.filter((item) => {
-      if (selectedvalue == "Mobile") {
-        const Mobile = item.MobileNo.toString().toLowerCase();
-        return Mobile.includes(inputValue);
-      } else if (selectedvalue == "Member") {
-        const Member = item.Member.toString().toLowerCase();
-        return Member.includes(inputValue);
-      } else if (selectedvalue == "MemberCode") {
-        const MemberCode = item.MemberCode.toString().toLowerCase();
-        return MemberCode.includes(inputValue);
-      } else {
-        const FName = item.Member.toString().toLowerCase();
-        return FName.includes(inputValue);
-      }
-    });
-    setInputValue(inputValue);
-    setData(filteredData);
-    setFilteredData(filteredData);
+    // const filteredData = data.filter((item) => {
+    //   if (selectedvalue == "Mobile") {
+    //     const Mobile = item.MobileNo.toString().toLowerCase();
+    //     return Mobile.includes(inputValue);
+    //   } else if (selectedvalue == "Member") {
+    //     const Member = item.Member.toString().toLowerCase();
+    //     return Member.includes(inputValue);
+    //   } else if (selectedvalue == "MemberCode") {
+    //     const MemberCode = item.MemberCode.toString().toLowerCase();
+    //     return MemberCode.includes(inputValue);
+    //   } else {
+    //     const FName = item.Member.toString();
+    //     return FName.includes(inputValue);
+    //   }
+    // });
+    // setInputValue(inputValue);
+    // setData(filteredData);
+    // setFilteredData(filteredData);
   };
 
   const showModal = (record) => {
@@ -155,6 +156,24 @@ const PageHeader = () => {
     },
   ];
 
+  const CallService = (e) => {
+    e.preventDefault();
+    setData();
+    async function fetchData() {
+      const response = await fetch(
+        `https://lunivacare.ddns.net/CFCMemberService/LunivaCFCMemApi/GetMemberListForElection?searchby=${selectedvalue}&searchparameter=${searchTerm}`
+      );
+
+      const datas = await response.json();
+
+      const removedTime = datas.memberlist.map((i) => i.DOB.split("T")[0]);
+
+      setData(datas.memberlist);
+      setFinaldata(datas.memberlist);
+    }
+    fetchData();
+  };
+
   return (
     <PageHeaderComponent>
       <PageHeaders>
@@ -162,62 +181,76 @@ const PageHeader = () => {
           <p className="searchby" style={{}}>
             Search By:
           </p>
-          <Select
-            // defaultValue="none"
+          <form onSubmit={CallService}>
+            <Select
+              // defaultValue="none"
 
-            style={{
-              width: "30%",
-              margin: 10,
-              height: "50px",
-              padding: "6px",
-            }}
-            onChange={handleChange}
-            options={[
-              {
-                id: 1,
-                value: "Name",
-                label: "Name",
-              },
-              {
-                id: 2,
-                value: "Mobile",
-                label: "Mobile",
-              },
+              style={{
+                width: "35%",
+                margin: 10,
+                height: "50px",
+                padding: "6px",
+              }}
+              onChange={handleChange}
+              options={[
+                {
+                  id: 1,
+                  value: "Name",
+                  label: "Name",
+                },
+                {
+                  id: 2,
+                  value: "Mobile",
+                  label: "Mobile",
+                },
 
-              {
-                id: 3,
-                value: "Citizenship",
-                label: "Citizenship",
-              },
-              {
-                id: 4,
-                value: "MemberCode",
-                label: "MemberCode",
-              },
-            ]}
-          />
-          <Input
-            className="input-filed"
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            value={query}
-            onClear={handleInputClear}
-            style={{
-              width: "30%",
-              height: "40px",
-              marginTop: "16px",
-              padding: "6px",
-              fontSize: "16px",
-            }}
-            placeholder="Search "
-          />
+                {
+                  id: 4,
+                  value: "MemberCode",
+                  label: "MemberCode",
+                },
+              ]}
+            />
+            <Input
+              className="input-filed"
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              value={query}
+              onClear={handleInputClear}
+              style={{
+                width: "30%",
+                height: "40px",
+                marginTop: "16px",
+                padding: "6px",
+                fontSize: "16px",
+              }}
+              placeholder="Search "
+            />
+            <button
+              type="submit"
+              style={{
+                padding: 0,
+                height: 40,
+                alignSelf: "center",
+                marginLeft: "10px",
+                padding: "2px 14px",
+                backgroundColor: "#1d92ff",
+                color: "white",
+                cursor: "pointer",
+                borderRadius: "6px",
+                border: "none",
+              }}
+            >
+              Search
+            </button>
+          </form>
         </Searchbar>
         <Divider orientation="right" plain></Divider>
       </PageHeaders>
       {searchTerm ? (
         <Tablebody>
           <Col span={24}>
-            <Table columns={columns} dataSource={finalstore} />
+            <Table columns={columns} dataSource={data} />
           </Col>
         </Tablebody>
       ) : (
