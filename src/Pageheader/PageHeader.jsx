@@ -16,16 +16,16 @@ const PageHeader = () => {
   const [finalstore, setFinalStore] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
-    console.log(inputValue, "inputvalue");
+    // console.log(inputValue, "inputvalue");
     if (!searchTerm || inputValue) {
       async function fetchData() {
         const response = await fetch(
           "https://lunivacare.ddns.net/CFCMemberService/LunivaCFCMemApi/GetMemberListForElection?searchby=Name&searchparameter=Sure"
         );
         const datas = await response.json();
-        console.log(datas.memberlist, "datas");
+
         const removedTime = datas.memberlist.map((i) => i.DOB.split("T")[0]);
-        console.log(removedTime);
+
         setData(datas.memberlist);
         setFinaldata(datas.memberlist);
       }
@@ -37,7 +37,6 @@ const PageHeader = () => {
     setFinalStore(datasource);
   });
   const handleInputClear = (e) => {
-    console.log("i ama cleared");
     setQuery("");
   };
   const handleKeyDown = (e) => {
@@ -50,7 +49,7 @@ const PageHeader = () => {
     const inputValues = e.target.value;
     setInputValue(inputValues);
     const inputValue = e.target.value.toLowerCase();
-    console.log(inputValue, "userinput");
+
     const filteredData = data.filter((item) => {
       if (selectedvalue == "Mobile") {
         const Mobile = item.MobileNo.toString().toLowerCase();
@@ -85,9 +84,7 @@ const PageHeader = () => {
     setSelectedvalue(value);
     console.log(value, "value");
   };
-  useEffect(() => {
-    console.log(selectedvalue, "selectedvalue");
-  });
+
   const columns = [
     {
       title: "Name",
@@ -210,7 +207,7 @@ const PageHeader = () => {
               height: "40px",
               marginTop: "16px",
               padding: "6px",
-              fontSize: "20px",
+              fontSize: "16px",
             }}
             placeholder="Search "
           />
@@ -228,8 +225,7 @@ const PageHeader = () => {
           className="display-text"
           style={{ display: "flex", justifyContent: "center" }}
         >
-          Hello and welcome to the search page, Look up your item and see what
-          comes up.
+          Welcome to the search page, Look up your item and see what comes up.
         </h3>
       )}
       <Modal
@@ -257,13 +253,14 @@ const PageHeader = () => {
           justifyContent: "center",
           alignItems: "center",
           backgroundColor: "white",
-          padding: "2px",
+          padding: "8px",
+          borderTop: "1px solid lightgrey",
         }}
       >
-        <div style={{ fontSize: 20 }}>Powered by </div>
+        <div style={{ fontSize: 16 }}>Powered by </div>
         <img
           src=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2motjI5uJzUekAeuwejbcKj8FGgz22m0igg&usqp=CAU"
-          style={{ width: "10%", marginLeft: 10 }}
+          style={{ width: "5%", marginLeft: 10 }}
         />
       </div>
     </PageHeaderComponent>
@@ -279,7 +276,7 @@ const PageHeaderComponent = styled.div`
   }
   .searchby {
     white-space: nowrap;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     margin-left: 8px;
   }
